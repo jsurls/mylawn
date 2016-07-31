@@ -1,1 +1,13 @@
 .idea/
+*.pyc
+.*sw[op]
+_build
+venv
+*.egg*
+htmlcov
+.coverage
+.dockerignore
+dist
+.tox
+build
+*.bak

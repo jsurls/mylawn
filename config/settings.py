@@ -1,0 +1,2 @@
+# Defaults to Austin, TX
+WUNDERGROUND_STATION = 'KTXAUSTI905'
