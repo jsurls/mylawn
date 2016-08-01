@@ -7,7 +7,7 @@ Fan  :    .5" per 20 minutes
 At 1.5" of watering it takes 10 hours to cycle through the yard (assuming no watering of the beds).
 
 To Run:
-python waterguide.py
+python run.py
 
 To Run with Alexa:
-python waterguide-alexa.py
+python run.py -a
