@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jsurls/mylawn.svg?branch=master)](https://travis-ci.org/jsurls/mylawn)
+
 ## Developer Setup
 ```
 # Install virtualenv and virtualenvwrapper
