@@ -22,5 +22,5 @@ cp -r ${APP_DIR}/* ${BUILD_DIR}
 
 ## Zip project
 cd ${BUILD_DIR}
-zip -r ${APP_NAME}.zip *
+zip -r ${APP_NAME}.zip * --exclude \*.pyc
 mv ${APP_NAME}.zip ..
