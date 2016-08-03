@@ -18,3 +18,6 @@ At 1.5" of watering it takes 10 hours to cycle through the yard (assuming no wat
 
 ## Running
 ```python run.py```
+
+## Building
+```build.sh```
