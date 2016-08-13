@@ -1,0 +1,16 @@
+[
+    {
+        "id": "user_123",
+        "station_id": "KTXAUSTI905",
+        "last_modification": "2013-09-02T00:00:00Z",
+        "last_invoked": "2013-09-02T00:00:00Z",
+        "total_calls": 0
+    },
+    {
+        "id": "user_234",
+        "station_id": "KTXAUSTI905",
+        "last_modification": "2013-09-02T00:00:00Z",
+        "last_invoked": "2013-09-02T00:00:00Z",
+        "total_calls": 5
+    }
+]
