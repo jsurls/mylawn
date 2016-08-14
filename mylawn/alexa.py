@@ -1,8 +1,9 @@
 #!/bin/env python
 from __future__ import print_function
-from mylawn import get_water_info
 
 import datastore
+from config.settings import ALEXA_APP_ID
+from mylawn import get_water_info
 
 ALEXA_PAUSE = '<break time="1ms"/>'
 ALEXA_START = '<speak>'
@@ -20,13 +21,11 @@ def lambda_handler(event, context):
           event['session']['application']['applicationId'])
 
     """
-    Uncomment this if statement and populate with your skill's application ID to
-    prevent someone else from configuring a skill that sends requests to this
-    function.
+    Verify your skill's application ID to prevent someone else from
+    configuring a skill that sends requests to this function.
     """
-    # if (event['session']['application']['applicationId'] !=
-    #         "amzn1.echo-sdk-ams.app.[unique-value-here]"):
-    #     raise ValueError("Invalid Application ID")
+    if event['session']['application']['applicationId'] != ALEXA_APP_ID:
+        raise ValueError("Invalid Application ID")
 
     if event['session']['new']:
         on_session_started({'requestId': event['request']['requestId']},
