@@ -1,2 +1,3 @@
 # Defaults to Austin, TX
 WUNDERGROUND_STATION = 'KTXAUSTI905'
+DYNAMO_LOCAL = False

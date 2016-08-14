@@ -121,8 +121,8 @@ def get_station_for_user(user_id):
     user = datastore.get_user(user_id)
 
     # Return None for station_id if user does not exist
-    if user is not None:
-        return user.get("station_id", None)
+    if user is None:
+        return None
 
     # Return None if station_id is not set
     return user.get('station_id', None)
