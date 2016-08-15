@@ -1,7 +1,4 @@
-#!/bin/env python
-import datetime
-import re
-import requests
+from wunderground import get_weather_data
 
 
 def get_water_info(weather_station):
@@ -43,34 +40,6 @@ def water_message(avg_temp, total_rain):
         return "You've exceeded %s inches for the week. Turn off sprinklers." % water_amount
 
 
-def get_weather_data(weather_station):
-    """
-    Queries a nearby weather underground station for temp data and rain data
-    :param weather_station: weather underground weather station id
-    :return: (average_temp, total_rain)
-    """
-    now = datetime.datetime.now()
-    then = now - datetime.timedelta(days=7)
-
-    endpoint = "http://www.wunderground.com/weatherstation/WXDailyHistory.asp?graphspan=custom&format=1"
-    query_weather_station = ("ID=%s" % weather_station)
-    query_date_start = ("day=%s&month=%s&year=%s" % (then.day, then.month, then.year))
-    query_date_end = ("dayend=%s&monthend=%s&yearend=%s" % (now.day, now.month, now.year))
-
-    weather_url = ("%s&%s&%s&%s" % (endpoint, query_weather_station, query_date_start, query_date_end))
-
-    # print weather_data_url
-    html_data = requests.get(weather_url).text
-
-    weather_data = filter(lambda x: not re.match(r'^\s*$', x) and not re.match(r'^.*<br>.*$', x),
-                          html_data.splitlines())
-
-    avg_temp = avg(map(lambda x: float(x.split(",")[1]), weather_data))
-    total_rain = sum(map(lambda x: float(x.split(",")[-1]), weather_data))
-
-    return avg_temp, total_rain
-
-
 def water_guidance(temp):
     """
     Return a float of how much water is needed
@@ -105,7 +74,3 @@ def mow_guidance(temp):
         return "highest"
     else:
         return "regular"
-
-
-def avg(sequence):
-    return reduce(lambda x, y: x + y, sequence) / len(sequence)

@@ -4,6 +4,7 @@ from __future__ import print_function
 import datastore
 from config.settings import ALEXA_APP_ID
 from mylawn import get_water_info
+from wunderground import get_station_by_zipcode
 
 ALEXA_PAUSE = '<break time="1ms"/>'
 ALEXA_START = '<speak>'
@@ -108,12 +109,6 @@ def get_weather_data(session):
     return build_response(session_attributes, speechlet)
 
 
-def find_station_by_zip(zipcode):
-    """ Finds the nearest wundergound station by zipcode """
-    # TODO: validate zipcode
-    return 'KTXAUSTI905'
-
-
 def get_station_for_user(user_id):
     """ Finds the saved wunderground station by user id """
     # Fetch the user
@@ -152,7 +147,11 @@ def set_station_from_zip(intent, session):
         zipcode = intent['slots']['zipcode']['value']
 
         # Get the station id for this zipcode and save it for the user
-        station_id = find_station_by_zip(zipcode)
+        station_id = get_station_by_zipcode(zipcode)
+        if station_id is None:
+            message = "I was unable to find a station with the zipcode <say-as interpret-as=\"spell-out\">%s</say-as>" % zipcode
+            return basic_message([message])
+
         set_station_for_user(user_id, station_id)
 
         zip_response = "I'll remember <say-as interpret-as=\"spell-out\">%s</say-as> as your default zipcode" % zipcode

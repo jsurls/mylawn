@@ -2,3 +2,12 @@ dynamodb:
   image: peopleperhour/dynamodb:latest
   ports:
     - 8000:8000
+
+wunderground:
+  image: training/webapp:latest
+  ports:
+    - 5000:5000
+  volumes:
+    - /Users/jsurls/workspace/mylawn/scripts:/opt/webapp
+    - /Users/jsurls/workspace/mylawn/sample:/opt/sample
+  command: python wunderground_server.py
