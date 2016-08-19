@@ -101,7 +101,7 @@ def get_weather_data(session):
     # Setup user configuration if it doesn't exist
     if wundergound is None:
         session_attributes["get_weather_data"] = True
-        return basic_message(["I don't know where we are.", "What is your zip code?"])
+        return basic_message(["I don't know where we are.", "What is your zip code?"], False)
 
     # Return the weather data
     verbage = alexify(get_water_info(wundergound))
@@ -149,7 +149,8 @@ def set_station_from_zip(intent, session):
         # Get the station id for this zipcode and save it for the user
         station_id = get_station_by_zipcode(zipcode)
         if station_id is None:
-            message = "I was unable to find a station with the zipcode <say-as interpret-as=\"spell-out\">%s</say-as>" % zipcode
+            message = "I was unable to find a station with the zipcode " \
+                      "<say-as interpret-as=\"spell-out\">%s</say-as>" % zipcode
             return basic_message([message])
 
         set_station_for_user(user_id, station_id)
@@ -162,10 +163,10 @@ def set_station_from_zip(intent, session):
 
 # --------------- Helpers that build all of the responses ----------------------
 
-def basic_message(sentences):
-    """ Creates a basic message alexa will say, ending the session. """
+def basic_message(sentences, should_end_session=True):
+    """ Creates a basic message alexa will say. """
     verbage = alexify(sentences)
-    speechlet = build_speechlet_response(verbage, True)
+    speechlet = build_speechlet_response(verbage, should_end_session)
     return build_response({}, speechlet)
 
 

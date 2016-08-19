@@ -20,6 +20,9 @@ rm -fr ${BUILD_DIR}/*dist-info
 ## Add project
 cp -r ${APP_DIR}/* ${BUILD_DIR}
 
+## Add config
+cp -r config ${BUILD_DIR}
+
 ## Zip project
 cd ${BUILD_DIR}
 zip -r ${APP_NAME}.zip * --exclude \*.pyc
