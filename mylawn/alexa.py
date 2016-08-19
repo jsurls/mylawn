@@ -146,6 +146,11 @@ def set_station_from_zip(intent, session):
         user_id = session["user"]["userId"]
         zipcode = intent['slots']['zipcode']['value']
 
+        if len(str(zipcode)) < 5:
+            message = "The zip code <say-as interpret-as=\"spell-out\">%s</say-as> " \
+                      " was not 5 digits in length" % zipcode
+            return basic_message([message])
+
         # Get the station id for this zipcode and save it for the user
         station_id = get_station_by_zipcode(zipcode)
         if station_id is None:

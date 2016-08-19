@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SETTINGS_DIR=$1
+
 APP_NAME=mylawn
 APP_DIR=${APP_NAME}
 BUILD_DIR=build
@@ -21,7 +23,7 @@ rm -fr ${BUILD_DIR}/*dist-info
 cp -r ${APP_DIR}/* ${BUILD_DIR}
 
 ## Add config
-cp -r config ${BUILD_DIR}
+cp -r ${SETTINGS_DIR} ${BUILD_DIR}
 
 ## Zip project
 cd ${BUILD_DIR}
