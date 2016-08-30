@@ -144,12 +144,20 @@ def set_station_from_zip(intent, session):
     try:
         # Get user id and supplied zipcode
         user_id = session["user"]["userId"]
-        zipcode = intent['slots']['zipcode']['value']
+        zipcode = intent["slots"]["zipcode"].get('value', None)
 
+        # Alexa could not decode the input
+        if zipcode is None or zipcode == "?":
+            messages = ["I am having difficulty understanding your zipcode.",
+                        "Try saying your five digit zipcode again."]
+            return basic_message(messages, False)
+
+        # The zipcode provided was not 5 digits
         if len(str(zipcode)) < 5:
-            message = "The zip code <say-as interpret-as=\"spell-out\">%s</say-as> " \
-                      " was not 5 digits in length" % zipcode
-            return basic_message([message])
+            messages = ["The zip code <say-as interpret-as=\"spell-out\">%s</say-as>"
+                        " was not five digits in length" % zipcode,
+                        "Try saying your five digit zipcode again."]
+            return basic_message([messages, False])
 
         # Get the station id for this zipcode and save it for the user
         station_id = get_station_by_zipcode(zipcode)

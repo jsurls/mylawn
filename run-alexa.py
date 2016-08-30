@@ -21,4 +21,4 @@ if __name__ == '__main__':
 
     with open(json_file) as data_file:
         data = json.load(data_file)
-        print(lambda_handler(data, None))
+        print("Response:\n" + json.dumps(lambda_handler(data, None), sort_keys=True, indent=4))
