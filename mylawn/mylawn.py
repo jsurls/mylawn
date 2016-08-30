@@ -34,7 +34,8 @@ def water_message(avg_temp, total_rain):
     water_needed = max(water_amount - total_rain, 0)
 
     if water_needed > 0:
-        message_template = "You need %s inches to reach %s inches for the week.  <break time=\"2ms\"/> Water %.0f%%."
+        message_template = "You need %s inches to reach %s inches for the week. " \
+                           "<break time=\"2ms\"/> Water %.0f percent."
         return message_template % (water_needed, water_amount, water_needed / .015)
     else:
         return "You've exceeded %s inches for the week. Turn off sprinklers." % water_amount
