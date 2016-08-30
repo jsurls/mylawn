@@ -13,7 +13,16 @@ def decimal_default(obj):
 
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1', endpoint_url="http://localhost:8000")
 
+print("--- User Table ---")
 table = dynamodb.Table("User")
+
+response = table.scan()
+for i in response['Items']:
+    print(json.dumps(i, default=decimal_default))
+
+
+print("--- GeoLookup Table ---")
+table = dynamodb.Table("GeoLookup")
 
 response = table.scan()
 for i in response['Items']:

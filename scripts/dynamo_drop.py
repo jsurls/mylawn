@@ -11,4 +11,11 @@ try:
 except ClientError:
     pass
 
-print("Deleting table.")
+try:
+    dynamodb.delete_table(
+        TableName='GeoLookup'
+    )
+except ClientError:
+    pass
+
+print("Deleting tables.")

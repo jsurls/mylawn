@@ -4,6 +4,7 @@ import re
 import urllib2
 
 import requests
+import datastore
 
 from config.settings import WUNDERGROUND_KEY
 
@@ -49,8 +50,19 @@ def get_station_by_zipcode(zipcode):
     :return: station_id
     """
     try:
-        response = wunderground_geo_locate(zipcode)
-        return response['location']['nearby_weather_stations']['pws']['station'][0]['id']
+        # Check locally first
+        geolookup = datastore.get_geolookup(zipcode)
+
+        # Call wunderground and store it for future calls
+        if geolookup is None:
+            station_id = wunderground_geo_locate(zipcode)
+            if station_id is None:
+                return None
+            else:
+                geolookup = {'id': str(zipcode), 'station_id': station_id}
+                datastore.put_geolookup(geolookup)
+
+        return geolookup.get('station_id')
     except Exception as error:
         print("Unexpected exception while fetching station for zipcode: " + zipcode, error)
         return None
@@ -60,9 +72,10 @@ def wunderground_geo_locate(zipcode):
     """
     Wunderground API Helper to call geolookup with zipcode
     :param zipcode:
-    :return: json response
+    :return: first station_id
     """
     endpoint = WUNDERGROUND_HOST + '/api/' + WUNDERGROUND_KEY + '/geolookup/q/' + zipcode + '.json'
     print("Endpoint: " + endpoint)
     stream = urllib2.urlopen(endpoint)
-    return json.loads(stream.read())
+    response = json.loads(stream.read())
+    return response['location']['nearby_weather_stations']['pws']['station'][0]['id']

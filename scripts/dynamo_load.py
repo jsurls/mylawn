@@ -6,7 +6,7 @@ dynamodb = boto3.resource('dynamodb', region_name='us-east-1', endpoint_url="htt
 
 table = dynamodb.Table("User")
 
-with open("../sample/sample_users.json") as json_file:
+with open("sample/sample_users.json") as json_file:
     users = json.load(json_file)
     for user in users:
         user_id = user['id']
@@ -26,3 +26,24 @@ with open("../sample/sample_users.json") as json_file:
                 'total_calls': total_calls
             }
         )
+
+print("Loaded: User")
+
+table = dynamodb.Table("GeoLookup")
+
+with open("sample/sample_geolookup.json") as json_file:
+    stations = json.load(json_file)
+    for station in stations:
+        zipcode = station['id']
+        station_id = user['station_id']
+
+        print("Adding zipcode:", zipcode)
+
+        table.put_item(
+            Item={
+                'id': zipcode,
+                'station_id': station_id
+            }
+        )
+
+print("Loaded: GeoLocation")

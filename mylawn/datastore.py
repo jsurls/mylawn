@@ -7,24 +7,42 @@ from config.settings import DYNAMO_LOCAL
 
 def get_user(user_id):
     """ Gets a user from the datastore"""
-    table = get_table('User')
-
-    # Create key
-    user_id_key = {"id": user_id}
-
-    # Query using key
-    response = table.get_item(Key=user_id_key)
-
-    # Return user if one exists
-    return response.get('Item', None)
+    return key_lookup('User', user_id)
 
 
 def put_user(user):
     """ Puts a user in the datastore"""
     table = get_table('User')
 
-    # Put user in datastore
+    # Put in datastore
     table.put_item(Item=user)
+
+
+def get_geolookup(zipcode):
+    """ Gets a default station id for this zipcode"""
+    return key_lookup('GeoLookup', zipcode)
+
+
+def put_geolookup(geolookup):
+    """ Puts a user in the datastore"""
+    table = get_table('GeoLookup')
+
+    # Put in datastore
+    table.put_item(Item=geolookup)
+
+
+def key_lookup(tablename, key):
+    """ Gets a value from table given key"""
+    table = get_table(tablename)
+
+    # Create key
+    k = {"id": key}
+
+    # Query using key
+    response = table.get_item(Key=k)
+
+    # Return user if one exists
+    return response.get('Item', None)
 
 
 def get_table(table_name):

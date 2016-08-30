@@ -24,3 +24,25 @@ table = dynamodb.create_table(
 )
 
 print("Table status:", table.table_status)
+
+table = dynamodb.create_table(
+    TableName='GeoLookup',
+    KeySchema=[
+        {
+            'AttributeName': 'id',
+            'KeyType': 'HASH'  # Partition key
+        }
+    ],
+    AttributeDefinitions=[
+        {
+            'AttributeName': 'id',
+            'AttributeType': 'S'  # Partition key
+        }
+    ],
+    ProvisionedThroughput={
+        'ReadCapacityUnits': 10,
+        'WriteCapacityUnits': 10
+    }
+)
+
+print("Table status:", table.table_status)
