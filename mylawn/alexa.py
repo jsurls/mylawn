@@ -53,7 +53,9 @@ def on_launch(launch_request, session):
     print("on_launch requestId=" + launch_request['requestId'] +
           ", sessionId=" + session['sessionId'])
     # Dispatch to your skill's launch
-    return basic_message(["Hello.", "I am your lawn.", "I'm here to help."])
+    return basic_message(["Hello.", "I am your lawn and I am here to help.",
+                          "Feel free to ask how much should I water.",
+                          "What would you like to do?"], False)
 
 
 def on_intent(intent_request, session):
