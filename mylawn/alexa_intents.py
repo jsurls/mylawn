@@ -21,4 +21,4 @@ def on_stop(intent, session):
 
 def on_cancel(intent, session):
     """ Called when the user says 'cancel' """
-    return basic_message(None, False)
+    return end_session()
