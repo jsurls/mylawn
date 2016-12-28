@@ -14,11 +14,6 @@ def get_weather_data(session):
     user_id = session["user"]["userId"]
     session_attributes = session.get("attributes", {})
 
-    # print("event.request.type: ", request.get("type"))
-    print("session.new: ", session.get("new"))
-    print("event.session.userId: ", user_id)
-    print("event.session.attributes: ", session_attributes)
-
     # Lookup wunderground station by user_id
     wundergound = get_station_for_user(user_id)
 

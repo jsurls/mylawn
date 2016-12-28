@@ -4,7 +4,8 @@ from __future__ import print_function
 from config.settings import ALEXA_APP_ID
 from alexa_intents import on_stop, on_help, on_cancel
 from mylawn_intents import get_weather_data, set_station_from_zip
-from alexa_utils import basic_message
+from alexa_utils import basic_message, end_session
+import json
 
 
 # --------------- Lambda Handler -----------------------------------------------
@@ -14,7 +15,7 @@ def lambda_handler(event, context):
     """ Route the incoming request based on type (LaunchRequest, IntentRequest,
     etc.) The JSON body of the request is provided in the event parameter.
     """
-    print("event.session.application.applicationId=" +
+    print("AUDIT: event.session.application.applicationId=" +
           event['session']['application']['applicationId'])
 
     """
@@ -28,25 +29,32 @@ def lambda_handler(event, context):
         on_session_started({'requestId': event['request']['requestId']},
                            event['session'])
 
+    response = None
     if event['request']['type'] == "LaunchRequest":
-        return on_launch(event['request'], event['session'])
+        response = on_launch(event['request'], event['session'])
     elif event['request']['type'] == "IntentRequest":
-        return on_intent(event['request'], event['session'])
+        response = on_intent(event['request'], event['session'])
     elif event['request']['type'] == "SessionEndedRequest":
-        return on_session_ended(event['request'], event['session'])
+        response = on_session_ended(event['request'], event['session'])
+
+    print("Response: " + json.dumps(response))
+    if response['response']['shouldEndSession']:
+        print("session_end_response")
+
+    return response
 
 
 def on_session_started(session_started_request, session):
     """ Called when the session starts """
 
-    print("on_session_started requestId=" + session_started_request['requestId']
+    print("EVENT: start_session --> requestId=" + session_started_request['requestId']
           + ", sessionId=" + session['sessionId'])
 
 
 def on_launch(launch_request, session):
     """ Called when the user launches the skill without specifying what they want """
 
-    print("on_launch requestId=" + launch_request['requestId'] +
+    print("EVENT: launch --> requestId=" + launch_request['requestId'] +
           ", sessionId=" + session['sessionId'])
     # Dispatch to your skill's launch
     return basic_message(["Hello.", "I am your lawn and I am here to help.",
@@ -56,11 +64,17 @@ def on_launch(launch_request, session):
 
 def on_intent(intent_request, session):
     """ Called when the user specifies an intent for this skill """
+    print("EVENT: intent --> requestId=" + intent_request['requestId'] + ", sessionId=" + session['sessionId'])
 
-    print("on_intent requestId=" + intent_request['requestId'] + ", sessionId=" + session['sessionId'])
+    print("User: " + session["user"]["userId"])
+
+    print("Session: " + json.dumps(session))
+    print("Session Attributes: " + str(session.get("attributes", {})))
 
     intent = intent_request['intent']
     intent_name = intent_request['intent']['name']
+    print("Intent Request: " + json.dumps(intent_request))
+    print("Intent Name: " + intent_name)
 
     # Handle default Amazon intents
     if intent_name == "AMAZON.HelpIntent":
@@ -85,6 +99,6 @@ def on_session_ended(session_ended_request, session):
     """ Called when the user ends the session.
     Is not called when the skill returns should_end_session=true
     """
-    print("on_session_ended requestId=" + session_ended_request['requestId'] +
+    print("EVENT: end_session --> requestId=" + session_ended_request['requestId'] +
           ", sessionId=" + session['sessionId'])
-    # add cleanup logic here
+    return end_session()
