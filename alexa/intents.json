@@ -1,0 +1,15 @@
+{
+  "intents": [
+    {
+      "intent": "SetStationFromZip",
+      "slots": [
+        {
+          "name": "zipcode",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },{
+      "intent": "GetWaterGuide"
+    }
+  ]
+}

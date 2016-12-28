@@ -1,0 +1,9 @@
+GetWaterGuide how much should I water
+GetWaterGuide how much I should water
+GetWaterGuide how much water it needs
+GetWaterGuide what do I do
+GetWaterGuide what I should do
+SetStationFromZip my zip code is {zipcode}
+SetStationFromZip my zip is {zipcode}
+SetStationFromZip {zipcode}
+Help help

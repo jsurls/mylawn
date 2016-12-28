@@ -1,6 +1,10 @@
 #!/bin/bash
 
 SETTINGS_DIR=$1
+if [ ! -d "$SETTINGS_DIR" ]; then
+  echo "Missing settings dir!"
+  exit 1
+fi
 
 APP_NAME=mylawn
 APP_DIR=${APP_NAME}
