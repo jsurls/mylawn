@@ -46,7 +46,7 @@ def set_station_from_zip(intent, session):
             messages = ["The zip code <say-as interpret-as=\"spell-out\">%s</say-as>"
                         " was not five digits in length" % zipcode,
                         "Try saying your five digit zipcode again."]
-            return basic_message([messages, False])
+            return basic_message(messages, False)
 
         # Get the station id for this zipcode and save it for the user
         station_id = get_station_by_zipcode(zipcode)
