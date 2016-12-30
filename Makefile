@@ -6,7 +6,8 @@ clean:
 install:
 	virtualenv venv && \
 		source venv/bin/activate && \
-		pip install -r requirements.txt
+		pip install -r requirements.txt && \
+		pip install -r requirements-test.txt
 
 docs: install
 	cd docs && make html && cd ..
