@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/jsurls/mylawn.svg?branch=master)](https://travis-ci.org/jsurls/mylawn)
+[![Coverage Status](https://coveralls.io/repos/github/jsurls/mylawn/badge.svg?branch=master)](https://coveralls.io/github/jsurls/mylawn?branch=master)
 
 ## Developer Setup
 ```
