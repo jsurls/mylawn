@@ -2,9 +2,8 @@
 
 ## Developer Setup
 ```
-# Install virtualenv and virtualenvwrapper
-pip install virtualenv
-pip install virtualenvwrapper 
+# Install deps
+pip install -r requirements-dev.txt
 ```
 
 ## Background
@@ -18,11 +17,17 @@ At 1.5" of watering it takes 10 hours to cycle through the yard (assuming no wat
 
 ## Running
 ```
-# Start Docker Infrastructure
+# Start AWS Infrastructure
+localstack start
+
+# Start Mock Wunderground Resource
 docker-compose up
 
+# Run from scripts dir
+cd scripts
+
 # Init database
-python scripts/dynamo_create.py
+python dynamo_create.py
 
 # "Ask MyLawn how much water do I need?"
 python run-alexa.py --file sample/get_water_guide.json
@@ -36,5 +41,5 @@ python run-alexa.py --file sample/get_water_guide.json
 
 ## Building
 ```
-build.sh
+pyb
 ```

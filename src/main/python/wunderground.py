@@ -2,13 +2,12 @@ import datetime
 import json
 import re
 import urllib2
-
+import os
 import requests
 import datastore
 
-from config.settings import WUNDERGROUND_KEY
-
-from config.settings import WUNDERGROUND_HOST
+WUNDERGROUND_KEY = os.getenv('WUNDERGROUND_KEY')
+WUNDERGROUND_HOST = os.getenv('WUNDERGROUND_HOST')
 
 
 def get_weather_data(weather_station):

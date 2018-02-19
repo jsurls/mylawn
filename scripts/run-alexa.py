@@ -1,10 +1,11 @@
 from __future__ import print_function
-from __future__ import print_function
 
 import argparse
 import json
+import sys
+sys.path.append('../src/main/python')
 
-from mylawn.alexa import lambda_handler
+from alexa import lambda_handler
 
 
 def parse_args():

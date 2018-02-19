@@ -1,7 +1,9 @@
 #!/bin/env python
 from __future__ import print_function
 
-from config.settings import ALEXA_APP_ID
+import os
+
+from session_utils import get_application_id
 from alexa_intents import on_stop, on_help, on_cancel
 from mylawn_intents import get_weather_data, set_station_from_zip
 from alexa_utils import basic_message, end_session
@@ -18,11 +20,13 @@ def lambda_handler(event, context):
     print("AUDIT: event.session.application.applicationId=" +
           event['session']['application']['applicationId'])
 
+    app_id = get_application_id(event)
+
     """
     Verify your skill's application ID to prevent someone else from
     configuring a skill that sends requests to this function.
     """
-    if event['session']['application']['applicationId'] != ALEXA_APP_ID:
+    if app_id != os.getenv('app_id', app_id):
         raise ValueError("Invalid Application ID")
 
     if event['session']['new']:

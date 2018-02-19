@@ -21,7 +21,7 @@ def read(json_file):
 
 
 def find(json_file):
-    prefixes = ["../sample/", "./sample/", ""]
+    prefixes = ["src/unittest/python/sample/", "../sample/", "./sample/"]
 
     for prefix in prefixes:
         if os.path.isfile(prefix + json_file):

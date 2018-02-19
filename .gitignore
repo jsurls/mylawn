@@ -14,3 +14,4 @@ build
 .cache
 *.zip
 dynamodb
+target

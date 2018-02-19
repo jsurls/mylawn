@@ -1,0 +1,29 @@
+{
+  "session": {
+    "sessionId": "SessionId.00000000-0000-0000-0000-000000000000",
+    "application": {
+      "applicationId": "amzn1.echo-sdk-ams.app.00000000-0000-0000-0000-000000000000"
+    },
+    "attributes": {},
+    "user": {
+      "userId": "amzn1.ask.account.000"
+    },
+    "new": true
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.00000000-0000-0000-0000-000000000000",
+    "locale": "en-US",
+    "timestamp": "1999-01-01T00:00:00Z",
+    "intent": {
+      "name": "SetStationFromZip",
+      "slots": {
+        "zipcode": {
+          "name": "zipcode",
+          "value": "0"
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

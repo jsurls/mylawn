@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 import unittest
 
-from mylawn.mylawn import water_guidance, mow_guidance
+from mylawn import water_guidance, mow_guidance
 
 
 class MyLawnTests(unittest.TestCase):

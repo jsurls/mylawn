@@ -1,13 +1,9 @@
-dynamodb:
-  image: peopleperhour/dynamodb:latest
-  ports:
-    - 8000:8000
-
 wunderground:
   image: training/webapp:latest
   ports:
     - 5000:5000
+  # Tweak these absolute paths to your environment
   volumes:
-    - /Users/jsurls/workspace/mylawn/scripts:/opt/webapp
-    - /Users/jsurls/workspace/mylawn/sample:/opt/sample
+    - /Users/jsurls/workspace/mylawn/src/main/scripts:/opt/webapp
+    - /Users/jsurls/workspace/mylawn/src/main/scripts/responses:/opt/sample
   command: python wunderground_server.py

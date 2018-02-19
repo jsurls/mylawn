@@ -1,8 +1,9 @@
 from __future__ import print_function  # Python 2/3 compatibility
 
 import boto3
+import os
 
-from config.settings import DYNAMO_LOCAL
+DYNAMO_LOCAL = os.getenv('DYNAMO_LOCAL', True)
 
 
 def get_user(user_id):
@@ -49,7 +50,7 @@ def get_table(table_name):
     """ Gets a Table resource by name"""
     # Get table resource
     if DYNAMO_LOCAL:
-        dynamodb = boto3.resource('dynamodb', region_name='us-east-1', endpoint_url="http://localhost:8000")
+        dynamodb = boto3.resource('dynamodb', region_name='us-east-1', endpoint_url="http://localhost:4569")
     else:
         dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     return dynamodb.Table(table_name)
