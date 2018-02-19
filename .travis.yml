@@ -8,4 +8,4 @@ install:
 script: pyb -X verify analyze
 
 after_success:
-  - coveralls --verbose
+  - coveralls
