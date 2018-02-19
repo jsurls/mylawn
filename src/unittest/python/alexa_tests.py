@@ -2,18 +2,17 @@ from __future__ import absolute_import
 
 import mock
 import unittest
+import helper
 
-from mylawn.alexa import lambda_handler
-from tests import helper
+from alexa import lambda_handler
 
 
 class AlexaTest(unittest.TestCase):
-    @mock.patch('mylawn.alexa.get_weather_data')
+    @mock.patch('alexa.get_weather_data')
     def test_lambda_handler_intent_request(self, mock_get_weather_data):
         # set up the mock
         expected_response = {"response": {"shouldEndSession": True}};
         mock_get_weather_data.return_value = expected_response
-
         request = helper.alexa_skills_request("get_water_guide.json")
 
         result = lambda_handler(request, None)
