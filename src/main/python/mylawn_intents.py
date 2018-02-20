@@ -1,6 +1,3 @@
-#!/bin/env python
-from __future__ import print_function
-
 import datastore
 from mylawn import get_water_info
 from wunderground import get_station_by_zipcode

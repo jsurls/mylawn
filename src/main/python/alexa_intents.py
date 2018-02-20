@@ -1,6 +1,3 @@
-#!/bin/env python
-from __future__ import print_function
-
 from alexa_utils import basic_message, end_session
 
 
