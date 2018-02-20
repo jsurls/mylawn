@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 ALEXA_PAUSE = '<break time="1ms"/>'
 ALEXA_START = '<speak>'
 ALEXA_FINISH = '</speak>'

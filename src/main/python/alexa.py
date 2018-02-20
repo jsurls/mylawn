@@ -1,26 +1,26 @@
-#!/bin/env python
-from __future__ import print_function
-
 import os
+import json
+import logging
 
-from session_utils import get_application_id
+from session_utils import get_application_id, get_user_id
 from alexa_intents import on_stop, on_help, on_cancel
 from mylawn_intents import get_weather_data, set_station_from_zip
 from alexa_utils import basic_message, end_session
-import json
 
 
-# --------------- Lambda Handler -----------------------------------------------
+# Setup basic logging
+logger = logging.getLogger(__name__)
+logging.getLogger().setLevel(logging.INFO)
 
 
 def lambda_handler(event, context):
     """ Route the incoming request based on type (LaunchRequest, IntentRequest,
     etc.) The JSON body of the request is provided in the event parameter.
     """
-    print("AUDIT: event.session.application.applicationId=" +
-          event['session']['application']['applicationId'])
+    logger.info('Event: %s', json.dumps(event))
 
     app_id = get_application_id(event)
+    logger.info('Application id: %s', app_id)
 
     """
     Verify your skill's application ID to prevent someone else from
@@ -41,25 +41,22 @@ def lambda_handler(event, context):
     elif event['request']['type'] == "SessionEndedRequest":
         response = on_session_ended(event['request'], event['session'])
 
-    print("Response: " + json.dumps(response))
+    logger.info("Response: %s", json.dumps(response))
     if response['response']['shouldEndSession']:
-        print("session_end_response")
+        logger.info("Response indicates session will end")
 
     return response
 
 
 def on_session_started(session_started_request, session):
     """ Called when the session starts """
-
-    print("EVENT: start_session --> requestId=" + session_started_request['requestId']
-          + ", sessionId=" + session['sessionId'])
+    logger.info("New session")
 
 
 def on_launch(launch_request, session):
     """ Called when the user launches the skill without specifying what they want """
+    logger.info("Launch Request")
 
-    print("EVENT: launch --> requestId=" + launch_request['requestId'] +
-          ", sessionId=" + session['sessionId'])
     # Dispatch to your skill's launch
     return basic_message(["Hello.", "I am your lawn and I am here to help.",
                           "Feel free to ask how much should I water.",
@@ -68,17 +65,13 @@ def on_launch(launch_request, session):
 
 def on_intent(intent_request, session):
     """ Called when the user specifies an intent for this skill """
-    print("EVENT: intent --> requestId=" + intent_request['requestId'] + ", sessionId=" + session['sessionId'])
+    user_id = get_user_id(session)
+    logger.info("Identified user: %s", user_id)
 
-    print("User: " + session["user"]["userId"])
-
-    print("Session: " + json.dumps(session))
-    print("Session Attributes: " + str(session.get("attributes", {})))
-
+    # Determine intent of the User
     intent = intent_request['intent']
     intent_name = intent_request['intent']['name']
-    print("Intent Request: " + json.dumps(intent_request))
-    print("Intent Name: " + intent_name)
+    logger.info("Intent Name: %s", intent_name)
 
     # Handle default Amazon intents
     if intent_name == "AMAZON.HelpIntent":
@@ -95,7 +88,7 @@ def on_intent(intent_request, session):
         return get_weather_data(session)
 
     # Default intent
-    print("UNKNOWN INTENT: " + intent_name)
+    logger.warn("Unknown intent: %s", intent_name)
     return on_help(intent, session)
 
 
@@ -103,6 +96,5 @@ def on_session_ended(session_ended_request, session):
     """ Called when the user ends the session.
     Is not called when the skill returns should_end_session=true
     """
-    print("EVENT: end_session --> requestId=" + session_ended_request['requestId'] +
-          ", sessionId=" + session['sessionId'])
+    logger.info("User ended session")
     return end_session()

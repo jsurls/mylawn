@@ -5,9 +5,14 @@ import urllib2
 import os
 import requests
 import datastore
+import logging
 
 WUNDERGROUND_KEY = os.getenv('WUNDERGROUND_KEY')
 WUNDERGROUND_HOST = os.getenv('WUNDERGROUND_HOST')
+
+# Setup basic logging
+logger = logging.getLogger(__name__)
+logging.getLogger().setLevel(logging.INFO)
 
 
 def get_weather_data(weather_station):
@@ -63,7 +68,7 @@ def get_station_by_zipcode(zipcode):
 
         return geolookup.get('station_id')
     except Exception as error:
-        print("Unexpected exception while fetching station for zipcode: " + zipcode, error)
+        logger.error("Unexpected exception while fetching station for zipcode: %s", error, exc_info=True)
         return None
 
 

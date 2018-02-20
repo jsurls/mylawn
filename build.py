@@ -25,12 +25,12 @@ latest_code = "code/latest/mylawn.zip"
 
 @init
 def set_properties(project):
-    # AWS Properties
-    project.set_property("bucket_name", "centrospecos")
-    project.set_property("bucket_prefix", "code/")
-    project.set_property("coverage_break_build", False)
     project.depends_on_requirements("requirements.txt")
     project.build_depends_on_requirements("requirements-dev.txt")
+    # AWS Properties
+    project.set_property("bucket_name", "mylawn")
+    project.set_property("bucket_prefix", "code/")
+    project.set_property("coverage_break_build", False)
 
 
 @depends('clean', 'package_lambda_code', 'upload_zip_to_s3', 'lambda_release')
