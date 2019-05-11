@@ -2,9 +2,13 @@
 [![Coverage Status](https://coveralls.io/repos/github/jsurls/mylawn/badge.svg?branch=master)](https://coveralls.io/github/jsurls/mylawn?branch=master)
 
 ## Developer Setup
+This project assumes Python 2.7
 ```
 # Install deps
 pip install -r requirements-dev.txt
+
+# Setup venv (if one doesn't exist)
+virtualenv venv
 ```
 
 ## Background
@@ -18,10 +22,7 @@ At 1.5" of watering it takes 10 hours to cycle through the yard (assuming no wat
 
 ## Running
 ```
-# Start AWS Infrastructure
-localstack start
-
-# Start Mock Wunderground Resource
+# Start Dependencies
 docker-compose up
 
 # Run from scripts dir

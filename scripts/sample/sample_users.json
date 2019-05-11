@@ -1,16 +1,10 @@
 [
     {
         "id": "amzn1.ask.account.000",
-        "station_id": "KTXAUSTI905",
-        "last_modification": "2013-09-02T00:00:00Z",
-        "last_invoked": "2013-09-02T00:00:00Z",
-        "total_calls": 0
+        "station_id": "12345"
     },
     {
         "id": "amzn1.ask.account.111",
-        "station_id": "KTXAUSTI905",
-        "last_modification": "2013-09-02T00:00:00Z",
-        "last_invoked": "2013-09-02T00:00:00Z",
-        "total_calls": 5
+        "station_id": "11111"
     }
 ]

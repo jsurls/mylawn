@@ -5,15 +5,9 @@ from flask import Flask
 app = Flask(__name__)
 
 
-@app.route("/weatherstation/WXDailyHistory.asp")
-def get_history():
-    with open("responses/sample_wunderground_history_response.html") as data_file:
-        return data_file.read()
-
-
-@app.route("/api/<apikey>/geolookup/q/<zipcode>.json")
-def geolookup_zip(apikey, zipcode):
-    with open("responses/sample_wunderground_zip_response.json") as data_file:
+@app.route("/api/<apikey>/history_<date>/lang:EN/units:english/bestfct:1/v:2.0/q/<query>.json")
+def get_history(apikey, date, query):
+    with open("responses/sample_wunderground_history_response.json") as data_file:
         data = json.load(data_file)
         return json.dumps(data)
 

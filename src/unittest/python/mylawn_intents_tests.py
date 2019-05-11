@@ -12,7 +12,7 @@ class MyLawnIntentsTest(unittest.TestCase):
     @mock.patch('mylawn_intents.datastore')
     def test_get_weather_data(self, mock_datastore, mock_water_info):
         # set up the mock
-        mock_datastore.get_user.return_value = {"userId": "123", "station_id": "ABC"}
+        mock_datastore.get_user.return_value = {"userId": "123", "station_id": "12345"}
         mock_water_info.return_value = ["It's cold.", "Don't water.", "Don't mow."]
 
         session = helper.session("get_water_guide.json")
@@ -60,9 +60,8 @@ class MyLawnIntentsTest(unittest.TestCase):
 
     # ------- set station tests ----------
 
-    @mock.patch('mylawn_intents.get_station_by_zipcode')
     @mock.patch('mylawn_intents.datastore')
-    def test_set_station(self, mock_datastore, mock_station_info):
+    def test_set_station(self, mock_datastore):
         ask = helper.alexa_skills_request("set_station_from_zip.json")
 
         result = set_station_from_zip(ask['request']['intent'], ask['session'])
@@ -74,9 +73,8 @@ class MyLawnIntentsTest(unittest.TestCase):
         should_end_session = result['response']['shouldEndSession']
         self.assertTrue(should_end_session)
 
-    @mock.patch('mylawn_intents.get_station_by_zipcode')
     @mock.patch('mylawn_intents.datastore')
-    def test_set_station_bad_zip(self, mock_datastore, mock_station_info):
+    def test_set_station_bad_zip(self, mock_datastore):
         ask = helper.alexa_skills_request("set_station_from_zip_bad.json")
 
         result = set_station_from_zip(ask['request']['intent'], ask['session'])

@@ -4,6 +4,18 @@ wunderground:
     - 5000:5000
   # Tweak these absolute paths to your environment
   volumes:
-    - /Users/jsurls/workspace/mylawn/src/main/scripts:/opt/webapp
-    - /Users/jsurls/workspace/mylawn/src/main/scripts/responses:/opt/sample
+    - /Users/jsurls/workspace/mylawn/scripts:/opt/webapp
+    - /Users/jsurls/workspace/mylawn/scripts/responses:/opt/sample
   command: python wunderground_server.py
+localstack:
+  image: localstack/localstack:latest
+  ports:
+    - '4563-4584:4563-4584'
+    - '8055:8080'
+  environment:
+    - SERVICES=s3,dynamodb
+    - DEBUG=1
+    - DATA_DIR=/tmp/localstack/data
+  volumes:
+    - './.localstack:/tmp/localstack'
+    - '/var/run/docker.sock:/var/run/docker.sock'

@@ -1,16 +1,15 @@
 import datetime
 import json
-import re
-import urllib2
-import os
-import requests
-import datastore
 import logging
+import os
+
+import requests
 
 WUNDERGROUND_KEY = os.getenv('WUNDERGROUND_KEY')
 WUNDERGROUND_HOST = os.getenv('WUNDERGROUND_HOST')
 
 # Setup basic logging
+logging.basicConfig()
 logger = logging.getLogger(__name__)
 logging.getLogger().setLevel(logging.INFO)
 
@@ -24,62 +23,20 @@ def get_weather_data(weather_station):
     now = datetime.datetime.now()
     then = now - datetime.timedelta(days=7)
 
-    endpoint = WUNDERGROUND_HOST + '/weatherstation/WXDailyHistory.asp?graphspan=custom&format=1'
-    query_weather_station = ("ID=%s" % weather_station)
-    query_date_start = ("day=%s&month=%s&year=%s" % (then.day, then.month, then.year))
-    query_date_end = ("dayend=%s&monthend=%s&yearend=%s" % (now.day, now.month, now.year))
+    query_date_start = ("%d%02d%02d" % (then.year, then.month, then.day))
+    query_date_end = ("%d%02d%02d" % (now.year, now.month, now.day))
 
-    weather_url = ("%s&%s&%s&%s" % (endpoint, query_weather_station, query_date_start, query_date_end))
+    api_key = '/api/%s' % WUNDERGROUND_KEY
+    history_key = '/history_%s%s/lang:EN/units:english/bestfct:1/v:2.0' % (query_date_start, query_date_end)
+    query='/q/%s.json?showObs=0&ttl=120' % weather_station
 
-    # print weather_data_url
-    html_data = requests.get(weather_url).text
+    weather_url = ("%s%s%s%s" % (WUNDERGROUND_HOST, api_key, history_key, query))
 
-    weather_data = filter(lambda x: not re.match(r'^\s*$', x) and not re.match(r'^.*<br>.*$', x),
-                          html_data.splitlines())
+    logger.info('Weather URL: %s', weather_url)
+    response = requests.get(weather_url).text
 
-    avg_temp = avg(map(lambda x: float(x.split(",")[1]), weather_data))
-    total_rain = sum(map(lambda x: float(x.split(",")[-1]), weather_data))
+    max_temp_avg = json.loads(response)['history']['summary']['max_temperature_avg']
+    sum_precip = json.loads(response)['history']['summary']['precip_sum']
 
-    return avg_temp, total_rain
+    return max_temp_avg, sum_precip
 
-
-def avg(sequence):
-    return reduce(lambda x, y: x + y, sequence) / len(sequence)
-
-
-def get_station_by_zipcode(zipcode):
-    """
-    Gets the nearest pws station id to this zipcode
-    :param zipcode:
-    :return: station_id
-    """
-    try:
-        # Check locally first
-        geolookup = datastore.get_geolookup(zipcode)
-
-        # Call wunderground and store it for future calls
-        if geolookup is None:
-            station_id = wunderground_geo_locate(zipcode)
-            if station_id is None:
-                return None
-            else:
-                geolookup = {'id': str(zipcode), 'station_id': station_id}
-                datastore.put_geolookup(geolookup)
-
-        return geolookup.get('station_id')
-    except Exception as error:
-        logger.error("Unexpected exception while fetching station for zipcode: %s", error, exc_info=True)
-        return None
-
-
-def wunderground_geo_locate(zipcode):
-    """
-    Wunderground API Helper to call geolookup with zipcode
-    :param zipcode:
-    :return: first station_id
-    """
-    endpoint = WUNDERGROUND_HOST + '/api/' + WUNDERGROUND_KEY + '/geolookup/q/' + zipcode + '.json'
-    print("Endpoint: " + endpoint)
-    stream = urllib2.urlopen(endpoint)
-    response = json.loads(stream.read())
-    return response['location']['nearby_weather_stations']['pws']['station'][0]['id']

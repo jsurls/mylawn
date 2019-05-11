@@ -11,19 +11,13 @@ with open("sample/sample_users.json") as json_file:
     for user in users:
         user_id = user['id']
         station_id = user['station_id']
-        last_mod = user['last_modification']
-        last_invoked = user['last_invoked']
-        total_calls = user['total_calls']
 
         print("Adding user:", user_id)
 
         table.put_item(
             Item={
                 'id': user_id,
-                'station_id': station_id,
-                'last_mod': last_mod,
-                'last_invoked': last_invoked,
-                'total_calls': total_calls
+                'station_id': station_id
             }
         )
 

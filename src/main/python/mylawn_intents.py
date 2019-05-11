@@ -1,6 +1,6 @@
 import datastore
+import re
 from mylawn import get_water_info
-from wunderground import get_station_by_zipcode
 from alexa_utils import basic_message, alexify, build_speechlet_response, build_response
 
 
@@ -45,14 +45,7 @@ def set_station_from_zip(intent, session):
                         "Try saying your five digit zipcode again."]
             return basic_message(messages, False)
 
-        # Get the station id for this zipcode and save it for the user
-        station_id = get_station_by_zipcode(zipcode)
-        if station_id is None:
-            message = "I was unable to find a station with the zipcode " \
-                      "<say-as interpret-as=\"spell-out\">%s</say-as>" % zipcode
-            return basic_message([message])
-
-        set_station_for_user(user_id, station_id)
+        set_station_for_user(user_id, zipcode)
 
         zip_response = "I'll remember <say-as interpret-as=\"spell-out\">%s</say-as> as your default zipcode" % zipcode
         return basic_message([zip_response])
@@ -72,7 +65,14 @@ def get_station_for_user(user_id):
         return None
 
     # Return None if station_id is not set
-    return user.get('station_id', None)
+    station = user.get('station_id', None)
+
+    # Patch to force Stations to Zipcodes
+    # TODO: Remove this later
+    if station is not None and not re.match(r'\d{5}$', station):
+        return None
+
+    return station
 
 
 def set_station_for_user(user_id, station_id):
