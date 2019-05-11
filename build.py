@@ -18,8 +18,8 @@ use_plugin('python.pycharm')
 name = "mylawn"
 default_task = "publish"
 version = "0.1"
-lambda_name = "MyLawn"
-bucket_name = "mylawn"
+lambda_name = "myLawn"
+bucket_name = "mylawn-code"
 latest_code = "code/latest/mylawn.zip"
 
 
@@ -28,7 +28,7 @@ def set_properties(project):
     project.depends_on_requirements("requirements.txt")
     project.build_depends_on_requirements("requirements-dev.txt")
     # AWS Properties
-    project.set_property("bucket_name", "mylawn")
+    project.set_property("bucket_name", bucket_name)
     project.set_property("bucket_prefix", "code/")
     project.set_property("coverage_break_build", False)
 

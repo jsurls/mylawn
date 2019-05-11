@@ -26,7 +26,7 @@ def lambda_handler(event, context):
     Verify your skill's application ID to prevent someone else from
     configuring a skill that sends requests to this function.
     """
-    if app_id != os.getenv('app_id', app_id):
+    if app_id != os.getenv('APP_ID', app_id):
         raise ValueError("Invalid Application ID")
 
     if event['session']['new']:

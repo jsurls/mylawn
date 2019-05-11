@@ -1,7 +1,12 @@
 import datastore
 import re
+import logging
 from mylawn import get_water_info
 from alexa_utils import basic_message, alexify, build_speechlet_response, build_response
+
+# Setup basic logging
+logger = logging.getLogger(__name__)
+logging.getLogger().setLevel(logging.INFO)
 
 
 def get_weather_data(session):
@@ -12,6 +17,7 @@ def get_weather_data(session):
     session_attributes = session.get("attributes", {})
 
     # Lookup wunderground station by user_id
+    logger.info("Looking up station for %s", user_id)
     wundergound = get_station_for_user(user_id)
 
     # Setup user configuration if it doesn't exist
@@ -20,6 +26,7 @@ def get_weather_data(session):
         return basic_message(["I don't know where we are.", "What is your zip code?"], False)
 
     # Return the weather data
+    logger.info("Using station %s for user %s", wundergound, user_id)
     verbage = alexify(get_water_info(wundergound))
     speechlet = build_speechlet_response(verbage, True)
     return build_response(session_attributes, speechlet)
@@ -67,9 +74,12 @@ def get_station_for_user(user_id):
     # Return None if station_id is not set
     station = user.get('station_id', None)
 
+    if station is None:
+        return None
+
     # Patch to force Stations to Zipcodes
     # TODO: Remove this later
-    if station is not None and not re.match(r'\d{5}$', station):
+    if not re.match(r'\d{5}$', station):
         return None
 
     return station

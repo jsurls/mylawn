@@ -1,8 +1,13 @@
 import boto3
 import os
+import logging
 
-DYNAMO_LOCAL = os.getenv('DYNAMO_LOCAL', True)
+DYNAMO_LOCAL = os.getenv('DYNAMO_LOCAL', 'True')
 
+# Setup basic logging
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+logging.getLogger().setLevel(logging.INFO)
 
 def get_user(user_id):
     """ Gets a user from the datastore"""
@@ -47,7 +52,8 @@ def key_lookup(tablename, key):
 def get_table(table_name):
     """ Gets a Table resource by name"""
     # Get table resource
-    if DYNAMO_LOCAL:
+    if DYNAMO_LOCAL == 'True':
+        logging.warn("Using LOCAL DYNAMO DB! - %s", DYNAMO_LOCAL)
         dynamodb = boto3.resource('dynamodb', region_name='us-east-1', endpoint_url="http://localhost:4569")
     else:
         dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
