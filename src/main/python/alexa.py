@@ -19,33 +19,38 @@ def lambda_handler(event, context):
     """
     logger.info('Event: %s', json.dumps(event))
 
-    app_id = get_application_id(event)
-    logger.info('Application id: %s', app_id)
+    try:
+        app_id = get_application_id(event)
+        logger.info('Application id: %s', app_id)
 
-    """
-    Verify your skill's application ID to prevent someone else from
-    configuring a skill that sends requests to this function.
-    """
-    if app_id != os.getenv('APP_ID', app_id):
-        raise ValueError("Invalid Application ID")
+        """
+        Verify your skill's application ID to prevent someone else from
+        configuring a skill that sends requests to this function.
+        """
+        if app_id != os.getenv('APP_ID', app_id):
+            raise ValueError("Invalid Application ID")
 
-    if event['session']['new']:
-        on_session_started({'requestId': event['request']['requestId']},
-                           event['session'])
+        if event['session']['new']:
+            on_session_started({'requestId': event['request']['requestId']},
+                               event['session'])
 
-    response = None
-    if event['request']['type'] == "LaunchRequest":
-        response = on_launch(event['request'], event['session'])
-    elif event['request']['type'] == "IntentRequest":
-        response = on_intent(event['request'], event['session'])
-    elif event['request']['type'] == "SessionEndedRequest":
-        response = on_session_ended(event['request'], event['session'])
+        response = None
+        if event['request']['type'] == "LaunchRequest":
+            response = on_launch(event['request'], event['session'])
+        elif event['request']['type'] == "IntentRequest":
+            response = on_intent(event['request'], event['session'])
+        elif event['request']['type'] == "SessionEndedRequest":
+            response = on_session_ended(event['request'], event['session'])
 
-    logger.info("Response: %s", json.dumps(response))
-    if response['response']['shouldEndSession']:
-        logger.info("Response indicates session will end")
+        logger.info("Response: %s", json.dumps(response))
+        if response['response']['shouldEndSession']:
+            logger.info("Response indicates session will end")
 
-    return response
+        return response
+    except Exception as e:
+        logging.error('Failed to handle event', exc_info=e)
+        return basic_message(["I am unable to get your lawn information right now.",
+                              "Please try again later."], True)
 
 
 def on_session_started(session_started_request, session):

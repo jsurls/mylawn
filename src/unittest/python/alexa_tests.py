@@ -47,3 +47,14 @@ class AlexaTest(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertFalse(result['response']['shouldEndSession'])
 
+    @mock.patch('alexa.get_weather_data')
+    def test_lambda_handler_catches_all_exceptions(self, mock_get_weather_data):
+        # set up the mock
+        mock_get_weather_data.return_value = Exception('mock exception raised')
+        request = helper.alexa_skills_request("get_water_guide.json")
+
+        result = lambda_handler(request, None)
+
+        # we should have a result
+        self.assertIsNotNone(result)
+

@@ -17,7 +17,7 @@ use_plugin('python.pycharm')
 # Properties
 name = "mylawn"
 default_task = "publish"
-version = "0.1"
+version = "0.2"
 lambda_name = "myLawn"
 bucket_name = "mylawn-code"
 latest_code = "code/latest/mylawn.zip"
