@@ -10,8 +10,8 @@ def end_session():
 
 def basic_message(sentences=None, should_end_session=True):
     """ Creates a basic message alexa will say. """
-    verbage = alexify(sentences)
-    speechlet = build_speechlet_response(verbage, should_end_session)
+    verbiage = alexify(sentences)
+    speechlet = build_speechlet_response(verbiage, should_end_session)
     return build_response({}, speechlet)
 
 

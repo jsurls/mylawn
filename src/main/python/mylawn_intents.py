@@ -27,8 +27,8 @@ def get_weather_data(session):
 
     # Return the weather data
     logger.info("Using station %s for user %s", wundergound, user_id)
-    verbage = alexify(get_water_info(wundergound))
-    speechlet = build_speechlet_response(verbage, True)
+    verbiage = alexify(get_water_info(wundergound))
+    speechlet = build_speechlet_response(verbiage, True)
     return build_response(session_attributes, speechlet)
 
 
@@ -77,7 +77,7 @@ def get_station_for_user(user_id):
     if station is None:
         return None
 
-    # Patch to force Stations to Zipcodes
+    # Patch to force Stations to Zipcode
     # TODO: Remove this later
     if not re.match(r'\d{5}$', station):
         return None

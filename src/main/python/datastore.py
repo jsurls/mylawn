@@ -9,6 +9,7 @@ logging.basicConfig()
 logger = logging.getLogger(__name__)
 logging.getLogger().setLevel(logging.INFO)
 
+
 def get_user(user_id):
     """ Gets a user from the datastore"""
     return key_lookup('User', user_id)
@@ -20,19 +21,6 @@ def put_user(user):
 
     # Put in datastore
     table.put_item(Item=user)
-
-
-def get_geolookup(zipcode):
-    """ Gets a default station id for this zipcode"""
-    return key_lookup('GeoLookup', zipcode)
-
-
-def put_geolookup(geolookup):
-    """ Puts a user in the datastore"""
-    table = get_table('GeoLookup')
-
-    # Put in datastore
-    table.put_item(Item=geolookup)
 
 
 def key_lookup(tablename, key):

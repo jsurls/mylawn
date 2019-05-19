@@ -28,7 +28,7 @@ def get_weather_data(weather_station):
 
     api_key = '/api/%s' % WUNDERGROUND_KEY
     history_key = '/history_%s%s/lang:EN/units:english/bestfct:1/v:2.0' % (query_date_start, query_date_end)
-    query='/q/%s.json?showObs=0&ttl=120' % weather_station
+    query = '/q/%s.json?showObs=0&ttl=120' % weather_station
 
     weather_url = ("%s%s%s%s" % (WUNDERGROUND_HOST, api_key, history_key, query))
 
@@ -39,4 +39,3 @@ def get_weather_data(weather_station):
     sum_precip = json.loads(response)['history']['summary']['precip_sum']
 
     return max_temp_avg, sum_precip
-
